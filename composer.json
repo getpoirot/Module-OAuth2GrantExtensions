@@ -13,8 +13,8 @@
       "poirot/mod-oauth2_server": "dev-devel"
     }
     , "autoload"  : {
-        , "psr-4": {
-            , "Module\\OAuth2Grants\\": "src/"
+        "psr-4": {
+            "Module\\OAuth2Grants\\": "src/"
         }
     }
     ,"repositories": [
