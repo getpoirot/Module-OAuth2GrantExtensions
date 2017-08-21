@@ -1,0 +1,23 @@
+{
+    "name": "poirot/mod-oauth2_grants"
+    , "description": "Grant Extensions For OAuth2 Server."
+    , "type"       : "library"
+    , "authors": [
+        {
+            "name": "Payam Naderi"
+            , "email": "naderi.payam@gmail.com"
+            , "role": "Developer"
+        }
+    ]
+    , "require": {
+      "poirot/mod-oauth2_server": "dev-devel"
+    }
+    , "autoload"  : {
+        , "psr-4": {
+            , "Module\\OAuth2Grants\\": "src/"
+        }
+    }
+    ,"repositories": [
+      { "type": "git" ,"url": "https://github.com/phPoirot/Module-OAuth2GrantExtensions.git" }
+    ]
+}
