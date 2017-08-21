@@ -10,11 +10,11 @@
         }
     ]
     , "require": {
-      "poirot/mod-oauth2_server": "dev-devel"
+      "poirot/mod-oauth2_server": "dev-master"
     }
     , "autoload"  : {
-        , "psr-4": {
-            , "Module\\OAuth2Grants\\": "src/"
+        "psr-4": {
+            "Module\\OAuth2Grants\\": "src/"
         }
     }
     ,"repositories": [
