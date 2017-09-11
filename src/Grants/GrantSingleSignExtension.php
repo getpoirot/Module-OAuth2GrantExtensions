@@ -7,6 +7,7 @@ use Module\OAuth2\Interfaces\Model\iValidation;
 use Module\OAuth2\Interfaces\Model\Repo\iRepoUsers;
 use Module\OAuth2\Interfaces\Model\Repo\iRepoValidationCodes;
 use Module\OAuth2\Model\Entity\User\IdentifierObject;
+use Module\OAuth2\Model\Entity\UserEntity;
 use Module\OAuth2\Model\Entity\Validation\AuthObject;
 use Poirot\OAuth2\Interfaces\Server\Repository\iEntityAccessToken;
 use Poirot\OAuth2\Interfaces\Server\Repository\iEntityRefreshToken;
@@ -31,6 +32,8 @@ class GrantSingleSignExtension
     protected $repoRefreshToken;
     /** @var iRepoUsers */
     protected $repoUser;
+
+    protected $allowRegisterOnCall = false;
 
     /** @var \DateInterval */
     protected $ttlAuthCode;
@@ -129,11 +132,26 @@ class GrantSingleSignExtension
         $mobileIdentifier = \Poirot\Std\emptyCoalesce(@$reqParams['mobile']);
         $mobileIdentifier = IdentifierObject::newMobileIdentifier($mobileIdentifier);
 
+
         # Attain User Mobile Identifier
         #
         $user = $this->repoUser->findOneMatchByIdentifiers([$mobileIdentifier]);
-        if (false === $user)
-            throw exOAuthServer::invalidGrant('Identifier Not Match.', $this->newGrantResponse());
+        if (false === $user) {
+            if (! $this->allowRegisterOnCall)
+                throw exOAuthServer::accessDenied($this->newGrantResponse());
+
+
+            // Register Given Identifier On OAuth User`s Database
+            $user  = new UserEntity;
+            $user->addIdentifier($mobileIdentifier);
+            $user->setMeta([
+                'client' => 'single-signin'
+            ]);
+
+
+            $user = \Module\OAuth2\Actions\IOC::Register()->persistUser($user);
+        }
+
 
         /** @var iUserIdentifierObject $mobIdentifier */
         $mobIdentifier = $user->getIdentifiers(IdentifierObject::IDENTITY_MOBILE);
@@ -302,6 +320,16 @@ class GrantSingleSignExtension
 
 
     // Options:
+
+    /**
+     * Allow Register User With Given Mobile Identity If Not Exists
+     *
+     * @param bool $allowRegisterOnCall
+     */
+    function setAllowRegisterOnCall($allowRegisterOnCall)
+    {
+        $this->allowRegisterOnCall = (boolean) $allowRegisterOnCall;
+    }
 
     /**
      * Set Auth Code Time To Live

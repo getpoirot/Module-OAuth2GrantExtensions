@@ -7,6 +7,7 @@ use Poirot\Ioc\Container\Service\aServiceContainer;
 class ServiceGrantSingleSignExtension
     extends aServiceContainer
 {
+    protected $allowRegisterOnCall = false;
     protected $ttlAuthCode;
     protected $ttlRefreshToken;
     protected $ttlAccessToken;
@@ -47,6 +48,8 @@ class ServiceGrantSingleSignExtension
             ->setRepoAccessToken( ($this->repoAccessToken) ? $this->repoAccessToken: \Module\OAuth2\Services\Repository\IOC::AccessTokens() )
             ->setRepoRefreshToken( \Module\OAuth2\Services\Repository\IOC::RefreshTokens() )
             ->setRepoValidationCodes( \Module\OAuth2\Services\Repository\IOC::ValidationCodes() )
+
+            ->setAllowRegisterOnCall( $this->allowRegisterOnCall )
         ;
 
         return $grantType;
@@ -54,6 +57,16 @@ class ServiceGrantSingleSignExtension
 
 
     // ..
+
+    /**
+     * Allow Register User With Given Mobile Identity If Not Exists
+     *
+     * @param bool $allowRegisterOnCall
+     */
+    function setAllowRegisterOnCall($allowRegisterOnCall)
+    {
+        $this->allowRegisterOnCall = (boolean) $allowRegisterOnCall;
+    }
 
     /**
      * @param mixed $ttlAuthCode
