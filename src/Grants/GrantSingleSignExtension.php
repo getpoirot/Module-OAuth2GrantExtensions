@@ -138,7 +138,7 @@ class GrantSingleSignExtension
         $user = $this->repoUser->findOneMatchByIdentifiers([$mobileIdentifier]);
         if (false === $user) {
             if (! $this->allowRegisterOnCall)
-                throw exOAuthServer::accessDenied($this->newGrantResponse());
+                throw exOAuthServer::invalidGrant('Register On Call Not Allowed!', $this->newGrantResponse());
 
 
             // Register Given Identifier On OAuth User`s Database
