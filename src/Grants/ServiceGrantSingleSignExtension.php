@@ -24,7 +24,7 @@ class ServiceGrantSingleSignExtension
     {
         $this->ttlAuthCode     = new \DateInterval('PT5M');
         $this->ttlRefreshToken = new \DateInterval('P1Y');
-        $this->ttlAccessToken  = new \DateInterval('P1Y');
+        $this->ttlAccessToken  = new \DateInterval('P7D');
 
         parent::__construct($nameOsetter, $setter);
     }
