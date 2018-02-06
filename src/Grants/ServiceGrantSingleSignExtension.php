@@ -22,10 +22,6 @@ class ServiceGrantSingleSignExtension
      */
     function __construct($nameOsetter = null, $setter = array())
     {
-        $this->ttlAuthCode     = new \DateInterval('PT5M');
-        $this->ttlRefreshToken = new \DateInterval('P1Y');
-        $this->ttlAccessToken  = new \DateInterval('P7D');
-
         parent::__construct($nameOsetter, $setter);
     }
 
@@ -39,9 +35,9 @@ class ServiceGrantSingleSignExtension
     {
         $grantType = new GrantSingleSignExtension;
         $grantType
-            ->setTtlAuthCode( $this->ttlAuthCode )
-            ->setTtlRefreshToken( $this->ttlRefreshToken )
-            ->setTtlAccessToken( $this->ttlAccessToken )
+            ->setTtlAuthCode( $this->getTtlAuthCode() )
+            ->setTtlRefreshToken( $this->getTtlRefreshToken() )
+            ->setTtlAccessToken( $this->getTtlAccessToken() )
 
             ->setRepoUser( \Module\OAuth2\Services\Repository\IOC::Users() )
             ->setRepoClient( \Module\OAuth2\Services\Repository\IOC::Clients() )
@@ -104,5 +100,41 @@ class ServiceGrantSingleSignExtension
     {
         // \Module\OAuth2\Services\Repository\IOC::AccessTokens()
         $this->repoAccessToken = $repoAccessToken;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    function getTtlAuthCode()
+    {
+        if (! $this->ttlAuthCode )
+            $this->ttlAuthCode = new \DateInterval('PT5M');
+
+        return $this->ttlAuthCode;
+    }
+
+    /**
+     * @return mixed
+     */
+    function getTtlRefreshToken()
+    {
+        if (! $this->ttlRefreshToken )
+            $this->ttlRefreshToken = new \DateInterval('P1Y');
+
+
+        return $this->ttlRefreshToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    function getTtlAccessToken()
+    {
+        if (! $this->ttlAccessToken )
+            $this->ttlAccessToken = new \DateInterval('P7D');
+
+
+        return $this->ttlAccessToken;
     }
 }
