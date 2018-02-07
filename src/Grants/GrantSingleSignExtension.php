@@ -135,11 +135,15 @@ class GrantSingleSignExtension
 
         # Attain User Mobile Identifier
         #
+        $firstTime = false;
+
         $user = $this->repoUser->findOneMatchByIdentifiers([$mobileIdentifier]);
         if (false === $user) {
             if (! $this->allowRegisterOnCall)
                 throw exOAuthServer::invalidGrant('Register On Call Not Allowed!', $this->newGrantResponse());
 
+
+            $firstTime = true;
 
             // Register Given Identifier On OAuth User`s Database
             $user  = new UserEntity;
@@ -186,8 +190,11 @@ class GrantSingleSignExtension
         ];
 
         $r = [
-            'validation_code' => $validationEntity->getValidationCode(),
-
+            'user' => [
+                'uid' => (string) $user->getUid(),
+            ],
+            'register_on_call' => $firstTime,
+            'validation_code'  => $validationEntity->getValidationCode(),
             '_link' => [
                 'resend_authcode' => $resendLinks,
             ],
