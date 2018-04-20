@@ -126,7 +126,7 @@ class GrantSingleSignExtension
      */
     protected function _respondAuthorizationCode(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $this->assertClient();
+        $client = $this->assertClient();
 
         $reqParams        = $request->getParsedBody();
         $mobileIdentifier = \Poirot\Std\emptyCoalesce(@$reqParams['mobile']);
@@ -149,7 +149,7 @@ class GrantSingleSignExtension
             $user  = new UserEntity;
             $user->addIdentifier($mobileIdentifier);
             $user->setMeta([
-                'client' => 'single-signin'
+                'client' => $client->getIdentifier(),
             ]);
 
 
