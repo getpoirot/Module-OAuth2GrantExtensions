@@ -177,6 +177,7 @@ class GrantSingleSignExtension
                 ->sendAuthCodeByMediumType($validationEntity, $authCodeObject->getType());
 
 
+
         # Build Response
         #
         $resendLinks = [
@@ -231,7 +232,7 @@ class GrantSingleSignExtension
         $validationEntity = $this->repoValidationCodes->findOneByValidationCode($validationCode);
         if (false === $validationEntity)
             // Code is Revoked!!
-            throw exOAuthServer::invalidRequest('code', 'Validation code has been revoked.', $this->newGrantResponse());
+            throw exOAuthServer::invalidGrant('Validation code has been revoked.', $this->newGrantResponse());
 
 
         # Validate Auth Code:
