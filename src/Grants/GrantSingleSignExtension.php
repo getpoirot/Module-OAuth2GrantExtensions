@@ -76,9 +76,9 @@ class GrantSingleSignExtension
     {
         $requestParameters = (array) $request->getParsedBody();
 
-        $grantType      = \Poirot\Std\emptyCoalesce(@$requestParameters['grant_type']);
-        $authCode       = \Poirot\Std\emptyCoalesce(@$requestParameters['auth_code']);
-        $validationCode = \Poirot\Std\emptyCoalesce(@$requestParameters['validation_code']);
+        $grantType      = $requestParameters['grant_type'] ?? null;
+        $authCode       = $requestParameters['auth_code'] ?? null;
+        $validationCode = $requestParameters['validation_code'] ?? null;
 
         return ($grantType === $this->getGrantType() && $authCode !== null && $validationCode !== null);
     }
@@ -87,8 +87,8 @@ class GrantSingleSignExtension
     {
         $requestParameters = (array) $request->getParsedBody();
 
-        $grantType        = \Poirot\Std\emptyCoalesce(@$requestParameters['grant_type']);
-        $mobileIdentifier = \Poirot\Std\emptyCoalesce(@$requestParameters['mobile']);
+        $grantType        = $requestParameters['grant_type'] ?? null;
+        $mobileIdentifier = $requestParameters['mobile'] ?? null;
 
         return ($grantType === $this->getGrantType() && $mobileIdentifier !== null);
     }
@@ -129,7 +129,7 @@ class GrantSingleSignExtension
         $client = $this->assertClient();
 
         $reqParams        = $request->getParsedBody();
-        $mobileIdentifier = \Poirot\Std\emptyCoalesce(@$reqParams['mobile']);
+        $mobileIdentifier = $reqParams['mobile'] ?? null;
         $mobileIdentifier = IdentifierObject::newMobileIdentifier($mobileIdentifier);
 
 
@@ -220,8 +220,8 @@ class GrantSingleSignExtension
         $client = $this->assertClient(true);
 
         $reqParams      = (array) $request->getParsedBody();
-        $authCode       = \Poirot\Std\emptyCoalesce(@$reqParams['auth_code']);
-        $validationCode = \Poirot\Std\emptyCoalesce(@$reqParams['validation_code']);
+        $authCode       = $reqParams['auth_code'] ?? null;
+        $validationCode = $reqParams['validation_code'] ?? null;
 
 
         if ($authCode === null || $validationCode === null)
